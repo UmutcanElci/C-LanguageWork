@@ -1,20 +1,26 @@
 #include <stdio.h>
 #include <string.h>
+struct Identity {
+  int id;
+  char nationality[50];
+};
 typedef struct Person {
+  struct Identity identity;
   char name[20];
   int age;
   float salary;
 }Person;
 
 int main(void) {
-  Person p1;
+  Person person;
 
-  strcpy(p1.name, "John");
-  p1.age = 25;
-  p1.salary = 50000.00;
+  person.identity.id = 1;
+  strcpy(person.identity.nationality, "Wordlwide");
+  strcpy(person.name, "John Doe");
+  person.age = 30;
+  person.salary = 1000.0;
 
-  printf("Name: %s\n Age: %d\n Salary: %.2f\n", p1.name, p1.age, p1.salary);
-
+  printf("ID : %d\n  Nationality : %s\n Name: %s\n Age: %d\n Salary : %f \n", person.identity.id,person.identity.nationality, person.name, person.age, person.salary);
 
 
   return 0;
