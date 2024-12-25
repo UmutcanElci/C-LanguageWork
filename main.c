@@ -1,20 +1,21 @@
 #include <stdio.h>
 #include <string.h>
-struct Person {
+typedef struct Person {
   char name[20];
   int age;
   float salary;
-};
+}Person;
 
 int main(void) {
-  struct Person person1; // Declare a structure variable
+  Person p1;
 
-  strcpy(person1.name, "Bob");
-  person1.age = 25;
-  person1.salary = 4680.50;
+  strcpy(p1.name, "John");
+  p1.age = 25;
+  p1.salary = 50000.00;
 
-  printf("Name %s\n Age %d\n Salary %f\n", person1.name, person1.age,
-         person1.salary);
+  printf("Name: %s\n Age: %d\n Salary: %.2f\n", p1.name, p1.age, p1.salary);
+
+
 
   return 0;
 }
