@@ -1,27 +1,29 @@
 #include <stdio.h>
-#include <string.h>
-struct Identity {
-  int id;
-  char nationality[50];
-};
-typedef struct Person {
-  struct Identity identity;
-  char name[20];
-  int age;
-  float salary;
-}Person;
-
 int main(void) {
-  Person person;
+  printf("Hello World");
 
-  person.identity.id = 1;
-  strcpy(person.identity.nationality, "Wordlwide");
-  strcpy(person.name, "John Doe");
-  person.age = 30;
-  person.salary = 1000.0;
+  int interger = 10;
+  float foo = 10.5;
 
-  printf("ID : %d\n  Nationality : %s\n Name: %s\n Age: %d\n Salary : %f \n", person.identity.id,person.identity.nationality, person.name, person.age, person.salary);
+  // I try to remember C language
+  printf("Integer = %d\n", interger);
+  printf("Float = %f\n", foo);
 
+  int x;
+  printf("Enter a number: ");
+
+  scanf("%d", &x);
+
+  printf("You entered: %d\n", x);
+
+  int a;
+  float b;
+
+  printf("Enter integer and then float number:");
+
+  scanf("%d, %f", &a, &b);
+
+  printf("You entered: %d and %f\n", a, b);
 
   return 0;
 }
