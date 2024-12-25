@@ -1,5 +1,8 @@
 #include <stdio.h>
-
+struct Bank {
+  // Structure to store the bank details like banks total money to give.
+  float totalMoney;
+};
 struct User {
   char name[50];
   char address[100];
@@ -67,8 +70,12 @@ int main(void) {
                account.balance);
       }
       break;
-      case 3:
-
+    case 3:
+      printf("Your balance is : %f", account.balance);
+      break;
+    case 4:
+      printf("Goodbye");
+      return 0;
     }
   }
 
