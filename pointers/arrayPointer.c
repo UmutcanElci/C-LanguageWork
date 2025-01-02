@@ -8,8 +8,18 @@ int main(){
   arr[1] = 20;
   arr[2] = 30;
 
-
+  //In the Stack
   printf("The address of the array %p\n", arr);
+  //Cannot increment the pointer
+  
+
+  //sizeof
+  printf("The size of the array %zu\n", sizeof(arr));
+  
+
+  //&
+  printf("%p\n",&arr);
+  printf("%p\n",arr);
 
   puts("\n\n");
 
@@ -18,8 +28,16 @@ int main(){
   *(ptr + 1) = 20;
   *(ptr + 2) = 30;
 
-
+  //In the Stack
   printf("The address of the array %p\n", ptr);
+  //Cannot increment the pointer
 
 
+  //sizeof
+  printf("The size of the array %zu\n", sizeof(ptr));
+
+  //&
+
+  printf("%p\n",&ptr);
+  printf("%p\n",ptr);
 }
