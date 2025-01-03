@@ -1,24 +1,26 @@
 #include <stdio.h>
 
-int FindMax(int *num1,int *num2){
-  if (*num1 > *num2) {
-    return *num1;
-  }else {
-  return *num2;
-  }
-}
+//& address of * value at address
 
 int main() {
-  int a,b,*ptr1,*ptr2,result;
-  printf("First number:");
-  scanf("%d",&a);
-  printf("Second nubmer:");
-  scanf("%d",&b);
+  int n;
+  printf("Input the size array : \n");
+  scanf("%d",&n);
 
-  ptr1 = &a;
-  ptr2 = &b;
+  int *ptr;
+  int arr[n];
+  
+  for (int i=0; i<n; i++) {
+    printf("Input the %d element : \n",i);
+    scanf("%d",&arr[i]);
+  }
 
-  result = FindMax(ptr1, ptr2);
 
-  printf("%d is the maximum number",result);
+  ptr = arr;
+
+  printf("--------\n");
+  for (int j = 0; j < n; j++) {
+    printf("Element %d of the array : %d\n",j,*(ptr+j));
+  }
+
 }
