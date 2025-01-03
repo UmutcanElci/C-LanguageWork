@@ -1,24 +1,26 @@
 #include <stdio.h>
 
 int main() {
+  int m = 29;
 
-  int m, n, o;
+  int *ab;
 
-  m = 10;
+  printf("Address of m : %p\n",&m);
+  printf("Value of m : %d\n",m);
 
-  int *z;
+  ab = &m;
 
-  z = &m;
+  printf("Address of ab : %p\n",ab);
+  printf("Content of pointer ab : %d\n",*ab);
 
-  printf("z stores the address of m = %p\n", z);
 
-  printf("*z stores the value of m = %d\n", *z);
+  m = 34;
 
-  printf("&m is the address of m = %p\n", &m);
+  printf("Address of pointer ab : %p\n",ab);
+  printf("Content of pointer ab : %d\n",*ab);
 
-  printf("&n stores the address of n = %p\n", &n);
+  *ab = 7;
 
-  printf("&o stores the address of o = %p\n", &o);
-
-  printf("&z stores the address of z = %p\n", &z);
+  printf("Address of m : %p\n",&m);
+  printf("Value of m : %d\n",m);
 }
