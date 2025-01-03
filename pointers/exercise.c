@@ -1,26 +1,34 @@
 #include <stdio.h>
 
 int main() {
-  int m = 29;
+  int m = 300;
+  float fx = 300.600006;
+  char cht = 'z';
 
-  int *ab;
+  // & address of
+  printf("address of m = %p\n", &m);
+  printf("address of fx = %p\n", &fx);
+  printf("address of cht = %p\n", &cht);
 
-  printf("Address of m : %p\n",&m);
-  printf("Value of m : %d\n",m);
+  // * value at address
+  printf("value at address of m = %d\n", *(&m));
+  printf("value at address of fx = %f\n", *(&fx));
+  printf("value at address of cht = %c\n", *(&cht));
 
-  ab = &m;
+  int *pm;
+  float *pfx;
+  char *pcht;
 
-  printf("Address of ab : %p\n",ab);
-  printf("Content of pointer ab : %d\n",*ab);
+  pm = &m;
+  pfx = &fx;
+  pcht = &cht;
+  printf("address of m = %p\n", pm);
+  printf("address of fx = %p\n", pfx);
+  printf("address of cht = %p\n", pcht);
 
+  // Pointer to value
 
-  m = 34;
-
-  printf("Address of pointer ab : %p\n",ab);
-  printf("Content of pointer ab : %d\n",*ab);
-
-  *ab = 7;
-
-  printf("Address of m : %p\n",&m);
-  printf("Value of m : %d\n",m);
+  printf("value at address of m = %d\n", *pm);
+  printf("value at address of fx = %f\n", *pfx);
+  printf("value at address of cht = %c\n", *pcht);
 }
