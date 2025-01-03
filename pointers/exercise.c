@@ -1,22 +1,24 @@
 #include <stdio.h>
 
-int sumTwoNumbers(int *num1, int *num2) { return *num1 + *num2; }
+int FindMax(int *num1,int *num2){
+  if (*num1 > *num2) {
+    return *num1;
+  }else {
+  return *num2;
+  }
+}
 
 int main() {
-  int a, b, sum;
-
-  printf("First number : \n");
-  scanf("%d", &a);
-  printf("Second number : \n");
-  scanf("%d", &b);
-
-
-
-  int *ptr1,*ptr2;
+  int a,b,*ptr1,*ptr2,result;
+  printf("First number:");
+  scanf("%d",&a);
+  printf("Second nubmer:");
+  scanf("%d",&b);
 
   ptr1 = &a;
   ptr2 = &b;
 
-  sum = sumTwoNumbers(ptr1, ptr2);
-  printf("The sum of two numbers : %d", sum);
+  result = FindMax(ptr1, ptr2);
+
+  printf("%d is the maximum number",result);
 }
