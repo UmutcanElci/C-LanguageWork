@@ -10,7 +10,13 @@ int main() {
   printf("Second number : \n");
   scanf("%d", &b);
 
-  sum = sumTwoNumbers(&a, &b);
 
+
+  int *ptr1,*ptr2;
+
+  ptr1 = &a;
+  ptr2 = &b;
+
+  sum = sumTwoNumbers(ptr1, ptr2);
   printf("The sum of two numbers : %d", sum);
 }
