@@ -1,32 +1,23 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 //& address of -  * value at address
 
-void swap(char *x, char *y) {
-  char temp = *x;
-  *x = *y;
-  *y = temp;
-}
-
-void permute(char *str, int start, int end) {
-  if (start == end) {
-    printf("%s  ", str);
-  } else {
-
-    for (int i = start; i <= end; i++) {
-      swap((str + start), (str + i));
-      permute(str, start+1, end);
-      swap((str + start), (str + i));
-    }
-  }
-}
-
 int main() {
 
-  char str[5] = "ABCDE";
+  int n;
+  printf("Input total number of element (1 to 100) : ");
+  scanf("%d", &n);
 
-  int n = strlen(str);
+  int *ptr = (int *)malloc(n * sizeof(int));
 
-  permute(str, 0, n - 1);
+  for (int i = 0; i < n; i++) {
+    printf("\nNumber %d : ", i);
+    scanf("%d", ptr + i);
+  }
+
+  for (int i = 0; i < n; i++) {
+    printf("Your input Number =  %d  \n", *(ptr + i));
+  }
 }
