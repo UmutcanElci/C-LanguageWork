@@ -1,16 +1,34 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 int main() {
-  char alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  char str [100];
 
-  // splitting
-  for (int i = 0; i < strlen(alphabet); i++) {
-    printf("%s",&alphabet[i]);
-    if (i < strlen(alphabet) - 1) {
-    printf(" ");
+  int alp,digit,spe;
+  alp=digit=spe=0;
+
+  printf("Enter a string: ");
+  fgets(str, sizeof(str), stdin);
+
+  int i = 0;
+  while(str[i]!='\0') {
+    if((str[i]>='a' && str[i]<='z') || (str[i]>='A' && str[i]<='Z')) {
+      alp++;
     }
+    else if(str[i]>='0' && str[i]<='9') {
+      digit++;
+    }
+    else {
+      spe++;
+    }
+    i++;
   }
-  printf("\n");
+
+
+  printf("Alphabets: %d\n", alp);
+  printf("Digits: %d\n", digit);
+  printf("Special Characters: %d\n", spe);
+
   return 0;
 }
