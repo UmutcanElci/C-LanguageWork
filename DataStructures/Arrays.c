@@ -7,11 +7,13 @@ int main() {
 
   int arr[n];
 
+  int *ptr = arr;
+
   puts("\n\n");
   for (int i = 0; i < n; i++) {
     printf("Please enter the array %d number : \n", i);
 
-    scanf("%d", &arr[i]);
+    scanf("%d", ptr + i);
   }
   for (int i = 0; i < n; i++) {
     printf("Array [%d] : %d \n", i, arr[i]);
