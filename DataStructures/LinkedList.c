@@ -5,21 +5,38 @@
 typedef struct node {
   int value;
   struct node *next;
-}Node;
-
+} Node;
 
 typedef struct {
-  Node* head;
-}LinkedList;
+  Node *head;
+} LinkedList;
 
-void printLinkedList(LinkedList *l){
-  Node *node_ptr = l -> head;
+void printLinkedList(LinkedList *l) {
+  Node *node_ptr = l->head;
 
   while (node_ptr != NULL) {
-    printf("&d", node_ptr -> value);
-    node_ptr = node_ptr -> next;
+    printf("%d ", node_ptr->value);
+    node_ptr = node_ptr->next;
   }
   printf("\n");
+}
+
+void AddToFront(LinkedList *l, int newNodeValue) {
+  if (l->head == NULL) {
+    Node *createNode = malloc(sizeof(Node));
+
+    createNode->value = newNodeValue;
+    createNode->next = NULL;
+    l->head = createNode;
+  } else {
+    Node *createNode = malloc(sizeof(Node));
+
+    createNode->value = newNodeValue;
+
+    createNode->next = l->head;
+
+    l->head = createNode;
+  }
 }
 
 void freeLinkedList(struct node *n) {
@@ -34,35 +51,24 @@ void freeLinkedList(struct node *n) {
 
 int main() {
   LinkedList a;
-  LinkedList b;
-  LinkedList c;
 
-  Node n1, n2, n3, n4, n5, n6;
+  Node *n1, *n2, *n3;
 
-  a.head = &n1;
-  b.head = &n3;
-  c.head = &n5;
+  n1 = malloc(sizeof(Node));
+  n2 = malloc(sizeof(Node));
+  n3 = malloc(sizeof(Node));
 
-  n1.value = 1;
-  n1.next = &n2;
-  n2.value = 2;
-  n2.next = NULL;
+  n1->value = 1;
+  n2->value = 2;
+  n3->value = 3;
 
+  n1->next = n2;
+  n2->next = n3;
+  n3->next = NULL;
 
-  n3.value = 3;
-  n3.next = &n4;
-  n4.value = 4;
-  n4.next = NULL;
-  
-  n5.value = 5;
-  n5.next = &n6;
-  n6.value = 6;
-  n6.next = NULL;
+  a.head = n1;
 
+  AddToFront(&a, 43);
   printLinkedList(&a);
-  printLinkedList(&b);
-  printLinkedList(&c);
-  
   return 0;
- 
 }
