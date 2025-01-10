@@ -2,75 +2,67 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct node {
+typedef struct node {
   int value;
   struct node *next;
-};
+}Node;
 
-struct node *head;
 
-void createNode(int numberOfNodes) {
-  struct node *newNode;
-  struct node *tempNode;
+typedef struct {
+  Node* head;
+}LinkedList;
 
-  int nodeData;
-  int counter;
+void printLinkedList(LinkedList *l){
+  Node *node_ptr = l -> head;
 
-  head = malloc(sizeof(struct node));
-
-  if (head == NULL) {
-    printf("Memory cannot be allocated");
-    return;
-  } else {
-
-    printf("Input the data for node %d :", counter);
-    scanf("%d", &nodeData);
-
-    head->value = nodeData;
-    head->next = NULL;
-
-    tempNode = head; // We need this to link the list
-
-    for (counter = 2; counter <= numberOfNodes; counter++) {
-      newNode = malloc(sizeof(struct node));
-
-      if (newNode == NULL) {
-        printf("Memory cannot be allocated");
-        return;
-      }
-      puts("\n");
-      printf("Input the data for node %d : ", counter);
-      scanf("%d", &nodeData);
-
-      newNode->value = nodeData;
-      newNode->next = NULL;
-      tempNode->next = newNode;
-      tempNode = newNode;
-    }
+  while (node_ptr != NULL) {
+    printf("&d", node_ptr -> value);
+    node_ptr = node_ptr -> next;
   }
+  printf("\n");
 }
 
-void printLinkedList(struct node *n) {
+void freeLinkedList(struct node *n) {
+  struct node *temp; // Temporary pointer to hold the next node
+
   while (n != NULL) {
-    printf("%d ", n->value);
-    n = n->next;
+    temp = n->next; // Save the next node
+    free(n);        // Free the current node
+    n = temp;       // Move to the next node
   }
 }
 
 int main() {
+  LinkedList a;
+  LinkedList b;
+  LinkedList c;
 
-  int n;
+  Node n1, n2, n3, n4, n5, n6;
 
-  printf("Input the size of the node : ");
-  scanf("%d", &n);
-  puts("\n");
-  if (n <= 0) {
-    printf("The size of the linked list must be greater than 0.\n");
-    return 0;
-  }
+  a.head = &n1;
+  b.head = &n3;
+  c.head = &n5;
 
-  createNode(n);
-  puts("\n");
-  printLinkedList(head);
+  n1.value = 1;
+  n1.next = &n2;
+  n2.value = 2;
+  n2.next = NULL;
+
+
+  n3.value = 3;
+  n3.next = &n4;
+  n4.value = 4;
+  n4.next = NULL;
+  
+  n5.value = 5;
+  n5.next = &n6;
+  n6.value = 6;
+  n6.next = NULL;
+
+  printLinkedList(&a);
+  printLinkedList(&b);
+  printLinkedList(&c);
+  
   return 0;
+ 
 }
