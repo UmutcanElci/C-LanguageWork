@@ -39,6 +39,19 @@ void AddToFront(LinkedList *l, int newNodeValue) {
   }
 }
 
+int DeleteFirst(LinkedList *l) {
+  if (l->head == NULL) {
+    printf("There is not a Linked List...");
+  } else {
+    Node *deletedNode = l->head;
+    int deletedValue = deletedNode->value;
+    l->head = deletedNode->next;
+    free(deletedNode);
+
+    return deletedValue;
+  }
+}
+
 void freeLinkedList(struct node *n) {
   struct node *temp; // Temporary pointer to hold the next node
 
@@ -69,6 +82,9 @@ int main() {
   a.head = n1;
 
   AddToFront(&a, 43);
+
+  int v = DeleteFirst(&a);
+  printf("%d\n", v);
   printLinkedList(&a);
   return 0;
 }
