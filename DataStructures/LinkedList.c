@@ -65,26 +65,15 @@ void freeLinkedList(struct node *n) {
 int main() {
   LinkedList a;
 
-  Node *n1, *n2, *n3;
+  a.head = NULL;
+  AddToFront(&a, 1);
+  AddToFront(&a, 2);
+  AddToFront(&a, 32);
+  AddToFront(&a, 4);
 
-  n1 = malloc(sizeof(Node));
-  n2 = malloc(sizeof(Node));
-  n3 = malloc(sizeof(Node));
 
-  n1->value = 1;
-  n2->value = 2;
-  n3->value = 3;
 
-  n1->next = n2;
-  n2->next = n3;
-  n3->next = NULL;
 
-  a.head = n1;
-
-  AddToFront(&a, 43);
-
-  int v = DeleteFirst(&a);
-  printf("%d\n", v);
   printLinkedList(&a);
   return 0;
 }
