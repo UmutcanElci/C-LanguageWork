@@ -4,7 +4,8 @@
 #include <string.h>
 #include <unistd.h>
 
-void *countFunction();
+#define NTHREADS 10
+void *countFunction(void *);
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 int counter = 0;
 
@@ -12,27 +13,24 @@ int main() {
   // Mutexes Block access to variables by other threads
   // Joins Make a thread wait till another thread finishes
 
-  int rc1, rc2;
-  pthread_t thread1, thread2;
+  pthread_t thread_id[NTHREADS];
+  int i, j;
 
-  if ((rc1 = pthread_create(&thread1, NULL, &countFunction, NULL))) {
+  for (i = 0; i < NTHREADS; i++) {
 
-    printf("Thread creation falied %d\n", rc1);
+    pthread_create(&thread_id[i], NULL, countFunction, NULL);
   }
-  if ((rc2 = pthread_create(&thread2, NULL, &countFunction, NULL))) {
+  for (j = 0; j < NTHREADS; j++) {
 
-    printf("Thread creation falied %d\n", rc2);
+    pthread_join(thread_id[j], NULL);
   }
 
-  pthread_join(thread1, NULL);
-  pthread_join(thread2, NULL);
-
-  exit(0);
+  printf("Final counter value %d\n", counter);
 }
 
-void *countFunction() {
+void *countFunction(void *ptr) {
+  printf("Thread number %ld\n", pthread_self());
   pthread_mutex_lock(&mutex1);
   counter++;
-  printf("Counter value: %d\n", counter);
   pthread_mutex_unlock(&mutex1);
 }
