@@ -3,19 +3,32 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void *workerThread(void * tid){
-  long * myID = (long *) tid;
-
-  printf("Hello This is Thread %ld\n",*myID);
-} 
+void *print_message_function(void *ptr);
 
 int main() {
+  // pthread_t is a data type used to uniquely identify a thread.
+  pthread_t thread1, thread2;
+  char *msg1 = "Thread 1";
+  char *msg2 = "Thread 2";
 
-  pthread_t tid0;
-  pthread_create(&tid0, NULL, workerThread, (void *)&tid0);
+  int iret1, iret2;
 
-  pthread_exit(NULL);
+  // Created indepetendent threads
+  iret1 = pthread_create(&thread1, NULL, print_message_function, (void *)msg1);
+  iret2 = pthread_create(&thread2, NULL, print_message_function, (void *)msg2);
 
-  return 0;
+  pthread_join(thread1, NULL);
+
+  pthread_join(thread2, NULL);
+
+  printf("Thread 1 returns %d\n", iret1);
+  printf("Thread 2 returns %d\n", iret2);
+
+  exit(0);
 }
 
+void *print_message_function(void *ptr) {
+  char *msg;
+  msg = (char *)ptr;
+  printf("%s \n", msg);
+}
