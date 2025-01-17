@@ -1,11 +1,6 @@
-#include "corecrt.h"
-#include "io.h"
-#include "psdk_inc/_ip_types.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
@@ -13,95 +8,67 @@
 
 int main() {
   WSADATA wsaData;
-  // Because I am using Windows
+
+  // Initialize Winsock
   if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-    perror("WSAStartup failed");
-    exit(EXIT_FAILURE);
+    fprintf(stderr, "WSAStartup failed: %d\n", WSAGetLastError());
   }
-  int fd;
 
-  struct sockaddr_in addr;
-
-  struct sockaddr_in cliaddr;
-  socklen_t cliaddrlen = sizeof(cliaddr);
-
-  // IPv4 , TCP , 0
-  fd = socket(AF_INET, SOCK_STREAM, 0); // creating a socket
-
-  // The Unix man pages list possible erors that can occur
-  // https://man7.org/linux/man-pages/man3/errno.3.html
-  if (fd == -1) {
-    switch (errno) {
-    case EPROTONOSUPPORT:
-      // Protocol Not Supported
-      perror("Protocol not Supported!");
-      break;
-    case EACCES:
-      // Permission denied
-      perror("Permission denied");
-      break;
-    default:
-      break;
-    }
+  // Create a socket
+  int fd = socket(AF_INET, SOCK_STREAM, 0);
+  if (fd == INVALID_SOCKET) {
+    fprintf(stderr, "Socket creation failed: %d\n", WSAGetLastError());
   }
 
   // Configure the server address structure
+  struct sockaddr_in addr;
+  memset(&addr, 0, sizeof(addr)); // Zero out the structure
+  addr.sin_family = AF_INET;      // IPv4
+  addr.sin_port = htons(8080);    // Port 8080 (convert to network byte order)
+  addr.sin_addr.s_addr = INADDR_ANY; // Bind to all available interfaces
 
-  addr.sin_family = AF_INET;
-  addr.sin_port = htons(8080);
-  addr.sin_addr.s_addr = INADDR_ANY;
-
-  // Bind a socket to a port
-  //  Socket , Pointer to addr strucutre , sizeof addr
-  if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
-    perror("Unable to bind!");
+  // Bind the socket to the address and port
+  if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) == SOCKET_ERROR) {
+    fprintf(stderr, "Bind failed: %d\n", WSAGetLastError());
   }
 
-  // Listening for connections
-  // socket , number of maximum conenctions(backlog)
-  if (listen(fd, 1) == -1) {
-    perror("Another errno... for listening");
+  // Start listening for incoming connections
+  if (listen(fd, 1) == SOCKET_ERROR) {
+    fprintf(stderr, "Listen failed: %d\n", WSAGetLastError());
   }
 
-  // Connecting to a server
-  // Same as binding
-  if (connect(fd, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
-    perror("Unable to open connection");
-  }
+  printf("Server is listening on port 8080...\n");
 
-  // Accepting connections
-  // Creating a new File Descritor for user - taking data from user
+  // Accept a connection
+  struct sockaddr_in cliaddr;
+  socklen_t cliaddrlen = sizeof(cliaddr);
   int connfd = accept(fd, (struct sockaddr *)&cliaddr, &cliaddrlen);
-
-  if (connfd == -1) {
-    perror("Unablea to accept connection");
+  if (connfd == INVALID_SOCKET) {
+    fprintf(stderr, "Accept failed: %d\n", WSAGetLastError());
   }
 
-  ssize_t i;
-  ssize_t rcount;
+  printf("Connection accepted...\n");
+
+  // Communicate with the client
   char buf[BUFLEN];
-  // Reading Data
-  rcount = read(fd, buf, BUFLEN);
-
-  if (rcount == -1) {
-    perror("Error while reading data");
+  ssize_t rcount = recv(connfd, buf, BUFLEN, 0);
+  if (rcount == SOCKET_ERROR) {
+    fprintf(stderr, "Receive failed: %d\n", WSAGetLastError());
+  } else {
+    printf("Received data: %.*s\n", (int)rcount, buf);
   }
 
-  for (i = 0; i < rcount; i++) {
-    printf("%c", buf[i]);
+  // Send data to the client
+  const char *data = "Hello, I created a server!";
+  if (send(connfd, data, strlen(data), 0) == SOCKET_ERROR) {
+    fprintf(stderr, "Send failed: %d\n", WSAGetLastError());
   }
 
-  char data[] = "Hello I create a server I think...";
-  int datalen = strlen(data);
+  // Close the sockets
+  closesocket(connfd);
+  closesocket(fd);
 
-  // Writing data
-  if (write(fd, data, datalen) == -1) {
-    perror("Error while writing data");
-  }
-
-  // Closing the Socket
-  close(connfd);
-  close(fd);
+  // Cleanup Winsock
   WSACleanup();
 
   return 0;
