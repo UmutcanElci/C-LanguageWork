@@ -19,6 +19,12 @@ int main() {
 
   socfd = socket(AF_INET, SOCK_STREAM, 0);
 
+  if (socfd == INVALID_SOCKET) {
+    fprintf(stderr, "Socket creation failed\n", WSAGetLastError());
+    closesocket(socfd);
+    WSACleanup();
+    return 1;
+  }
   serveraddr.sin_family = AF_INET;
   serveraddr.sin_port = htons(8080);
   serveraddr.sin_addr.s_addr = inet_addr("127.0.0.1");
@@ -36,18 +42,25 @@ int main() {
 
   fgets(sendbuf, BUFFLEN, stdin);
 
-  if (send(socfd, sendbuf, sizeof(sendbuf), 0) == -1) {
-    perror("Send error");
+  size_t len = strlen(sendbuf);
+  if (sendbuf[len - 1] == '\n') {
+    sendbuf[len - 1] = '\0';
   }
 
-  printf("Message send to the server");
+  if (send(socfd, sendbuf, sizeof(sendbuf), 0) == SOCKET_ERROR) {
+    fprintf(stderr, "Send the data is failed\n", WSAGetLastError());
+    closesocket(socfd);
+    WSACleanup();
+    return 1;
+  }
 
-  int recvlen = recv(socfd, recvbuf, sizeof(recvbuf), 0);
+  printf("Message send to the server\n");
+
+  int recvlen = recv(socfd, recvbuf, sizeof(recvbuf) - 1, 0);
 
   if (recvlen > 0) {
     recvbuf[recvlen] = '\0';
-
-    printf("Respense form server %s\n", recvbuf);
+    printf("Response form server : %s ", recvbuf);
   }
 
   closesocket(socfd);
