@@ -1,9 +1,4 @@
 #include <winsock2.h>
-#include "winsock.h"
-#include "psdk_inc/_ip_types.h"
-#include "psdk_inc/_socket_types.h"
-#include "psdk_inc/_wsadata.h"
-#include "synchapi.h"
 #include <stdio.h>
 #include <string.h>
 #include <windows.h>
@@ -24,39 +19,42 @@ int main() {
   struct sockaddr_in address;
   char buffer[BUFSZ];
 
-  if ((sock = socket(AF_INET, SOCK_STREAM, 0)) <= 0) {
-    perror("Client socket error!");
+  if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
+    fprintf(stderr, "Socket creation failed: %d\n", WSAGetLastError());
     WSACleanup();
-    closesocket(sock);
+    return 1;
   }
 
   address.sin_family = AF_INET;
-  address.sin_port = PORT;
-  address.sin_addr.s_addr = inet_addr("127.0.0.1");
+  address.sin_port = htons(PORT);
+  address.sin_addr.s_addr = inet_addr("127.0.0.1"); // Localhost
 
-  if (connect(sock, (struct sockaddr *)&address, sizeof(address)) <= 0) {
-    perror("Connection failed!");
-    WSACleanup();
+  if (connect(sock, (struct sockaddr *)&address, sizeof(address)) < 0) {
+    fprintf(stderr, "Connection failed: %d\n", WSAGetLastError());
     closesocket(sock);
+    WSACleanup();
+    return 1;
   }
 
-  printf("Connected to Server!");
+  printf("Connected to Server!\n");
 
   while (1) {
-
-    printf("Enter message (type ':q' to exit)  : \n");
+    printf("Enter message (type ':q' to exit): ");
     fgets(buffer, BUFSZ, stdin);
+    buffer[strcspn(buffer, "\n")] = '\0';
 
     if (strcmp(buffer, ":q") == 0) {
-      printf("Closing Connection.....\n");
+      printf("Closing connection...\n");
       break;
     }
-
-    send(sock, buffer, strlen(buffer), 0);
+    if (send(sock, buffer, strlen(buffer), 0) == SOCKET_ERROR) {
+      fprintf(stderr, "Send failed: %d\n", WSAGetLastError());
+      break;
+    }
   }
 
-  WSACleanup();
   closesocket(sock);
+  WSACleanup();
 
   return 0;
 }
